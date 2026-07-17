@@ -40,14 +40,72 @@ type PassDetails = {
   time: string;
 };
 
-const hubs = [
-  "Chaise Hub · Lekki Phase 1",
-  "Chaise Hub · Yaba",
-  "Chaise Hub · Abuja Central",
-  "Chaise Hub · Port Harcourt",
+type HubOption = {
+  group: "Cafe One by Sterling" | "Other Nigerian work hubs";
+  label: string;
+};
+
+const cafeOneHubs: HubOption[] = [
+  { group: "Cafe One by Sterling", label: "Cafe One · Abuja — 1st Floor, Sterling Bank Plaza, CBD Abuja, FCT" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Uyo — 162 Oron Road, Uyo, Akwa Ibom" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Calabar — State Library, beside Stadium Pool Side, Calabar Road" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Asaba — Sterling Bank Building, Umuagu Quarters, Nnebisi Road" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Asaba Nnebisi — Umuagu Quarters, Nnebisi Road, Asaba" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Ado Ekiti — Bank Road, by New Iyin Road, Ado Ekiti" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Enugu — 22 Okpara Avenue, Achara, CCB Building" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Owerri — Meksky Plaza, 24 Ikenegbu Layout, Owerri" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Kaduna — Uptown Mall, Zaire Road, Barnawa, Kaduna" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Kano Kofar Ruwa — Aminu Dantata Estate, Kofar Ruwa Market" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Kano MM Way — 110 Murtala Mohammad Way, Kano" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Adebola House — 38 Opebi Road, Ikeja, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Adeniran Ogunsanya — 74 Adeniran Ogunsanya Street, Surulere, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Adeola Odeku — 300 Adeola Odeku Street, Victoria Island, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Ajah — Ocean Mall, Plot 50, Lekki-Epe Expressway, Olokonla Bus Stop" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Chevron — 4th Floor, King's Deck Plaza, Chevron Drive, Lekki" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Dopemu — Shasha Road, Akowonjo, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Herbert Macaulay — Sterling Bank Building, 260 Herbert Macaulay Way, Yaba" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Iganmu — Plot 2-4 Abebe Village Road, Iganmu, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Ikate — 10 Nike Art Gallery Road, Ikate, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Ikeja — Ikeja Town Square, Obafemi Awolowo Way, Ikeja" },
+  { group: "Cafe One by Sterling", label: "Cafe One · LASU — Lagos State University, Ojo, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Lekki — 21 Admiralty Way, Lekki Phase 1, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Marina — 20 Marina, Lagos Island" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Ogudu — 123 Ogudu Road, Ojota, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · One Haven — Lagos Mainland" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Oregun — 3 Kudirat Abiola Way, Oregun, Lagos" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Unilag — UNILAG Bookshop Building, Main Campus, Akoka, Yaba" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Universal — All Access" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Yaba — 3rd Floor, E-Centre, 1-11 Commercial Avenue, Yaba" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Oshogbo — KM 3 Ibadan-Gbongan Road, Oshogbo, Osun" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Challenge — 97 Lagos Road, Challenge, Ibadan" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Iwo Road — 49A Sterling Bank Building, Abayomi Aba Junction, Iwo Road" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Palms Mall Ibadan — The Palms Shopping Mall, Ring Road, Ibadan" },
+  { group: "Cafe One by Sterling", label: "Cafe One · Port Harcourt — Deborah Lawson House, Off Sani Abacha Road, GRA Phase 3" },
 ];
 
-const topNavigation = ["Find Jobs", "Dashboard", "Proposals", "Messages", "Wallet", "(Hub)"];
+const partnerHubs: HubOption[] = [
+  { group: "Other Nigerian work hubs", label: "Ventures Park · Abuja — 5 Kwaji Close, Maitama" },
+  { group: "Other Nigerian work hubs", label: "Seedbuilders Innovation Hub · Abuja — 6A Embu Street, off Aminu Kano Crescent, Wuse 2" },
+  { group: "Other Nigerian work hubs", label: "Regus · Abuja City Centre — Central Business District" },
+  { group: "Other Nigerian work hubs", label: "HQ · Abuja Garki II — 28 Okemesi Crescent, Garki II" },
+  { group: "Other Nigerian work hubs", label: "Workstation · Lagos VI — Victoria Island, Lagos" },
+  { group: "Other Nigerian work hubs", label: "Workstation · Lagos Maryland — Maryland Mall, Lagos" },
+  { group: "Other Nigerian work hubs", label: "Spaces · Lagos — Victoria Island, Ikeja and Lekki flexible workspaces" },
+  { group: "Other Nigerian work hubs", label: "Regus · Lagos — Victoria Island, Ikeja and Lekki coworking locations" },
+  { group: "Other Nigerian work hubs", label: "Zahari Workspace · Lagos — Lekki" },
+  { group: "Other Nigerian work hubs", label: "Pause Cafe · Lagos — The Palms Shopping Mall, Maroko, Lekki" },
+  { group: "Other Nigerian work hubs", label: "Olotu Square · Port Harcourt — 31 Isiokpo Street, D/Line" },
+  { group: "Other Nigerian work hubs", label: "HUB10 · Port Harcourt — 5 Chief Ehule Lane, off Ada George Road" },
+  { group: "Other Nigerian work hubs", label: "Regus · Port Harcourt Trans Amadi — Old Michelin Compound" },
+  { group: "Other Nigerian work hubs", label: "Regus · Port Harcourt PH Tower — 37 Aba Road" },
+  { group: "Other Nigerian work hubs", label: "OFFICEBOX · Kano — Ahmadu Bello Way, Kano" },
+  { group: "Other Nigerian work hubs", label: "Startup Kano · Kano — Maiduguri Road, near Azman Filling Station" },
+  { group: "Other Nigerian work hubs", label: "HQ · Kano Zoo Road — 32 Zoo Road, Kano" },
+];
+
+const hubs = [...cafeOneHubs, ...partnerHubs];
+
+const topNavigation = ["Find Jobs", "Dashboard", "Proposals", "Messages", "Wallet", "Hub"];
 
 const categories = [
   "Accounting & consulting",
@@ -78,6 +136,10 @@ function formatDate(value: string) {
   }).format(new Date(`${value}T12:00:00`));
 }
 
+function formatHubName(value: string) {
+  return value.split(" — ")[0].replace(/^Cafe One · /, "").replace(/^(.+?) · /, "$1 — ");
+}
+
 function FieldLabel({ children, optional }: { children: React.ReactNode; optional?: boolean }) {
   return (
     <label className="field-label">
@@ -105,7 +167,7 @@ export default function Home() {
   const [startDate, setStartDate] = useState("2026-07-20");
   const [endDate, setEndDate] = useState("2026-08-14");
   const [projectValue, setProjectValue] = useState(450000);
-  const [hubName, setHubName] = useState(hubs[0]);
+  const [hubName, setHubName] = useState(hubs[0].label);
   const [workDate, setWorkDate] = useState("2026-07-24");
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("17:00");
@@ -137,6 +199,16 @@ export default function Home() {
 
   function removeMilestone(id: number) {
     setMilestones((current) => current.filter((milestone) => milestone.id !== id));
+  }
+
+  function proceedToHubSelection() {
+    if (!projectName.trim() || !projectDetails.trim() || !startDate || !endDate) {
+      setFormError("Please complete the required project details before choosing a hub.");
+      return;
+    }
+
+    setFormError("");
+    document.getElementById("hub-selection")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function generatePass(event: FormEvent<HTMLFormElement>) {
@@ -208,7 +280,7 @@ export default function Home() {
 
         <nav className={`top-navigation ${mobileNavOpen ? "is-open" : ""}`} aria-label="Primary">
           {topNavigation.map((item) => (
-            <a className={item === "(Hub)" ? "active" : ""} href="#hub-booking" key={item}>
+            <a className={item === "Hub" ? "active" : ""} href="#hub-booking" key={item}>
               {item}
             </a>
           ))}
@@ -368,9 +440,16 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+
+                <div className="step-actions">
+                  <button className="secondary-button" type="button" onClick={proceedToHubSelection}>
+                    Proceed to hub selection
+                    <ChevronRight size={17} />
+                  </button>
+                </div>
               </section>
 
-              <section className="form-card">
+              <section className="form-card" id="hub-selection">
                 <div className="section-heading">
                   <span className="section-icon"><MapPin size={19} /></span>
                   <div>
@@ -386,7 +465,13 @@ export default function Home() {
                     <div className="select-wrap">
                       <Building2 size={17} />
                       <select value={hubName} onChange={(event) => setHubName(event.target.value)}>
-                        {hubs.map((hub) => <option key={hub}>{hub}</option>)}
+                        {["Cafe One by Sterling", "Other Nigerian work hubs"].map((group) => (
+                          <optgroup label={group} key={group}>
+                            {hubs
+                              .filter((hub) => hub.group === group)
+                              .map((hub) => <option key={hub.label}>{hub.label}</option>)}
+                          </optgroup>
+                        ))}
                       </select>
                       <ChevronDown size={17} />
                     </div>
@@ -431,7 +516,7 @@ export default function Home() {
 
                 <div className="summary-preview">
                   <span><MapPin size={17} /> Hub centre</span>
-                  <strong>{hubName.replace("Chaise Hub · ", "")}</strong>
+                  <strong>{formatHubName(hubName)}</strong>
                 </div>
 
                 <dl className="summary-list">
@@ -510,7 +595,7 @@ export default function Home() {
             </div>
 
             <div className="pass-details">
-              <div><span>Hub centre</span><strong>{pass.hubName.replace("Chaise Hub · ", "")}</strong></div>
+              <div><span>Hub centre</span><strong>{formatHubName(pass.hubName)}</strong></div>
               <div><span>Date & time</span><strong>{formatDate(pass.workDate)} · {pass.time}</strong></div>
               <div><span>Project</span><strong>{pass.projectName}</strong></div>
             </div>

@@ -61,7 +61,7 @@ a {
 
 .app-shell {
   min-height: 100vh;
-  padding: 22px 30px 48px;
+  padding: 18px clamp(18px, 2.25vw, 34px) 46px;
 }
 
 .topbar {
@@ -73,7 +73,7 @@ a {
   gap: 28px;
   grid-template-columns: auto 1fr auto;
   margin: 0 auto;
-  max-width: 1540px;
+  max-width: 1500px;
   min-height: 74px;
   padding: 10px 20px 10px 30px;
   position: sticky;
@@ -207,7 +207,7 @@ a {
   gap: 10px;
   grid-template-columns: 38px minmax(0, 1fr) 38px;
   margin: 25px auto 18px;
-  max-width: 1540px;
+  max-width: 1500px;
   padding: 0;
 }
 
@@ -258,7 +258,7 @@ a {
   gap: 22px;
   grid-template-columns: 245px minmax(0, 1fr);
   margin: 0 auto;
-  max-width: 1540px;
+  max-width: 1500px;
 }
 
 .sidebar {
@@ -420,6 +420,10 @@ a {
 
 .content {
   min-width: 0;
+}
+
+#hub-selection {
+  scroll-margin-top: 112px;
 }
 
 .hero-card {
@@ -787,6 +791,35 @@ a {
 
 .milestone-row button:hover {
   color: var(--danger);
+}
+
+.step-actions {
+  border-top: 1px solid #eef0f3;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+  padding-top: 18px;
+}
+
+.secondary-button {
+  align-items: center;
+  background: #101828;
+  border: 0;
+  border-radius: 9px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 720;
+  gap: 8px;
+  min-height: 43px;
+  padding: 0 15px;
+}
+
+.secondary-button:hover {
+  background: #1d2939;
+  box-shadow: 0 8px 18px rgba(16, 24, 40, 0.14);
+  transform: translateY(-1px);
 }
 
 .summary-column {
