@@ -16,7 +16,6 @@ import {
   MapPin,
   Menu,
   MessageSquareText,
-  Plus,
   Search,
   ShieldCheck,
   Sparkles,
@@ -26,20 +25,13 @@ import {
 import { QRCodeCanvas } from "qrcode.react";
 import { FormEvent, useMemo, useState } from "react";
 
-type Milestone = {
-  id: number;
-  title: string;
-  dueDate: string;
-  paymentAmount: number;
-};
-
 type PassDetails = {
   code: string;
   projectName: string;
   hubName: string;
   workDate: string;
   time: string;
-  firstMilestonePayment: number;
+  hasMilestones: boolean;
   serviceFee: number;
 };
 
@@ -174,41 +166,13 @@ export default function Home() {
   const [workDate, setWorkDate] = useState("2026-07-24");
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("17:00");
-  const [milestones, setMilestones] = useState<Milestone[]>([
-    { id: 1, title: "Client review and final revisions", dueDate: "2026-07-30", paymentAmount: 225000 },
-    { id: 2, title: "Final files and brand handover", dueDate: "2026-08-14", paymentAmount: 225000 },
-  ]);
+  const [hasMilestones, setHasMilestones] = useState(true);
   const [feeAccepted, setFeeAccepted] = useState(false);
   const [formError, setFormError] = useState("");
   const [pass, setPass] = useState<PassDetails | null>(null);
   const [copied, setCopied] = useState(false);
 
   const serviceFee = useMemo(() => projectValue * 0.05, [projectValue]);
-  const firstMilestonePayment = milestones[0]?.paymentAmount || 0;
-  const firstMilestoneBalance = Math.max(firstMilestonePayment - serviceFee, 0);
-  const totalMilestonePayments = useMemo(
-    () => milestones.reduce((total, milestone) => total + (milestone.paymentAmount || 0), 0),
-    [milestones],
-  );
-
-  function addMilestone() {
-    setMilestones((current) => [
-      ...current,
-      { id: Date.now(), title: "", dueDate: endDate, paymentAmount: 0 },
-    ]);
-  }
-
-  function updateMilestone(id: number, key: "title" | "dueDate" | "paymentAmount", value: string | number) {
-    setMilestones((current) =>
-      current.map((milestone) =>
-        milestone.id === id ? { ...milestone, [key]: value } : milestone,
-      ),
-    );
-  }
-
-  function removeMilestone(id: number) {
-    setMilestones((current) => current.filter((milestone) => milestone.id !== id));
-  }
 
   function proceedToHubSelection() {
     if (!projectName.trim() || !projectDetails.trim() || !startDate || !endDate) {
@@ -240,7 +204,7 @@ export default function Home() {
       hubName,
       workDate,
       time: `${startTime} – ${endTime}`,
-      firstMilestonePayment,
+      hasMilestones,
       serviceFee,
     });
     setFormError("");
@@ -270,7 +234,7 @@ export default function Home() {
         hub: pass.hubName,
         date: pass.workDate,
         time: pass.time,
-        firstMilestonePayment: pass.firstMilestonePayment,
+        hasMilestones: pass.hasMilestones,
         hubFeeDeducted: pass.serviceFee,
       })
     : "";
@@ -423,58 +387,35 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="milestone-header">
+                <div className="milestone-check">
                   <div>
-                    <h3>Project milestones</h3>
-                    <p>Add the key outcomes and expected milestone payments.</p>
+                    <h3>Does this project have milestones?</h3>
+                    <p>We only need to know whether the payment is milestone-based.</p>
                   </div>
-                  <button type="button" onClick={addMilestone}><Plus size={16} /> Add milestone</button>
-                </div>
-
-                <div className="milestone-list">
-                  {milestones.map((milestone, index) => (
-                    <div className="milestone-row" key={milestone.id}>
-                      <span className="milestone-index">{index + 1}</span>
+                  <fieldset className="milestone-toggle" aria-label="Does this project have milestones?">
+                    <label className={hasMilestones ? "is-selected" : ""}>
                       <input
-                        aria-label={`Milestone ${index + 1} title`}
-                        placeholder="Milestone title"
-                        value={milestone.title}
-                        onChange={(event) => updateMilestone(milestone.id, "title", event.target.value)}
+                        type="radio"
+                        name="hasMilestones"
+                        checked={hasMilestones}
+                        onChange={() => setHasMilestones(true)}
                       />
+                      <span>Yes</span>
+                    </label>
+                    <label className={!hasMilestones ? "is-selected" : ""}>
                       <input
-                        aria-label={`Milestone ${index + 1} due date`}
-                        type="date"
-                        value={milestone.dueDate}
-                        onChange={(event) => updateMilestone(milestone.id, "dueDate", event.target.value)}
+                        type="radio"
+                        name="hasMilestones"
+                        checked={!hasMilestones}
+                        onChange={() => setHasMilestones(false)}
                       />
-                      <div className="milestone-payment-input">
-                        <span>NGN</span>
-                        <input
-                          aria-label={`Milestone ${index + 1} payment amount`}
-                          min={0}
-                          placeholder="Payment"
-                          type="number"
-                          value={milestone.paymentAmount}
-                          onChange={(event) => updateMilestone(milestone.id, "paymentAmount", Number(event.target.value))}
-                        />
-                      </div>
-                      <button type="button" aria-label={`Remove milestone ${index + 1}`} onClick={() => removeMilestone(milestone.id)}>
-                        <X size={17} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="milestone-payment-note">
-                  <div>
-                    <span>First milestone payment</span>
-                    <strong>{formatMoney(firstMilestonePayment)}</strong>
+                      <span>No</span>
+                    </label>
+                  </fieldset>
+                  <div className="milestone-caution">
+                    <ShieldCheck size={16} />
+                    <p><strong>Caution:</strong> Hub centre commission is deducted from the first milestone payment.</p>
                   </div>
-                  <div>
-                    <span>5% hub fee deducted</span>
-                    <strong>{formatMoney(serviceFee)}</strong>
-                  </div>
-                  <p>Balance after hub fee: <strong>{formatMoney(firstMilestoneBalance)}</strong></p>
                 </div>
 
                 <div className="step-actions">
@@ -559,8 +500,7 @@ export default function Home() {
                   <div><dt>Work date</dt><dd>{formatDate(workDate)}</dd></div>
                   <div><dt>Time</dt><dd>{startTime} – {endTime}</dd></div>
                   <div><dt>Project timeline</dt><dd>{formatDate(startDate)} – {formatDate(endDate)}</dd></div>
-                  <div><dt>Milestones</dt><dd>{milestones.length}</dd></div>
-                  <div><dt>Milestone payments</dt><dd>{formatMoney(totalMilestonePayments)}</dd></div>
+                  <div><dt>Project has milestones</dt><dd>{hasMilestones ? "Yes" : "No"}</dd></div>
                 </dl>
 
                 <div className="fee-box">
@@ -569,7 +509,7 @@ export default function Home() {
                     <strong>5%</strong>
                   </div>
                   <p>Estimated fee: <strong>{formatMoney(serviceFee)}</strong></p>
-                  <small>Deducted from first milestone payment of {formatMoney(firstMilestonePayment)}.</small>
+                  <small>Hub centre commission is deducted from the first milestone payment.</small>
                 </div>
 
                 <label className="consent-row">
@@ -634,7 +574,7 @@ export default function Home() {
             <div className="pass-details">
               <div><span>Hub centre</span><strong>{formatHubName(pass.hubName)}</strong></div>
               <div><span>Date & time</span><strong>{formatDate(pass.workDate)} · {pass.time}</strong></div>
-              <div><span>First milestone</span><strong>{formatMoney(pass.firstMilestonePayment)} · fee {formatMoney(pass.serviceFee)}</strong></div>
+              <div><span>Milestones</span><strong>{pass.hasMilestones ? "Yes" : "No"} · fee {formatMoney(pass.serviceFee)}</strong></div>
               <div><span>Project</span><strong>{pass.projectName}</strong></div>
             </div>
 
